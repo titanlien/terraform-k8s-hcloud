@@ -31,7 +31,7 @@ resource "hcloud_network_subnet" "vlan1" {
 resource "hcloud_server_network" "srvnetwork" {
   server_id = "${hcloud_server.master[var.master_count.index].id}"
   network_id = "${hcloud_network.privNet.id}"
-  ip = "10.0.1.10"
+  ip = "10.0.1.${10+var.master_count.index}"
 }
 
 resource "hcloud_server" "master" {
