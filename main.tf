@@ -1,5 +1,14 @@
+terraform {
+  backend "s3" {
+    encrypt = true
+    bucket = "tfstate-titan"
+    key    = "hcloud-k8s/terraform.tfstate"
+    region = "eu-west-1"
+  }
+}
+
 provider "hcloud" {
-  token = "${var.hcloud_token}"
+  token = var.hcloud_token
 }
 
 resource "hcloud_ssh_key" "k8s_admin" {
@@ -8,15 +17,11 @@ resource "hcloud_ssh_key" "k8s_admin" {
 }
 
 resource "hcloud_server" "master" {
-  count       = "${var.master_count}"
+  count       = var.master_count
   name        = "master-${count.index + 1}"
-  server_type = "${var.master_type}"
-  image       = "${var.master_image}"
-  ssh_keys    = ["${hcloud_ssh_key.k8s_admin.id}"]
-
-  connection {
-    private_key = "${file(var.ssh_private_key)}"
-  }
+  server_type = var.master_type
+  image       = var.master_image
+  ssh_keys    = [hcloud_ssh_key.k8s_admin.name]
 
   provisioner "file" {
     source      = "files/10-kubeadm.conf"
@@ -29,7 +34,7 @@ resource "hcloud_server" "master" {
   }
 
   provisioner "remote-exec" {
-    inline = "DOCKER_VERSION=${var.docker_version} KUBERNETES_VERSION=${var.kubernetes_version} bash /root/bootstrap.sh"
+    inline = ["DOCKER_VERSION=${var.docker_version} KUBERNETES_VERSION=${var.kubernetes_version} bash /root/bootstrap.sh"]
   }
 
   provisioner "file" {
@@ -38,16 +43,16 @@ resource "hcloud_server" "master" {
   }
 
   provisioner "remote-exec" {
-    inline = "CORE_DNS=${var.core_dns} bash /root/master.sh"
+    inline = ["CORE_DNS=${var.core_dns} bash /root/master.sh"]
   }
 
   provisioner "local-exec" {
     command = "bash scripts/copy-kubeadm-token.sh"
 
-    environment {
+    environment = {
       SSH_PRIVATE_KEY = "${var.ssh_private_key}"
       SSH_USERNAME    = "root"
-      SSH_HOST        = "${hcloud_server.master.ipv4_address}"
+      SSH_HOST        = "${hcloud_server.master[count.index].ipv4_address}"
       TARGET          = "${path.module}/secrets/"
     }
   }
@@ -59,11 +64,7 @@ resource "hcloud_server" "node" {
   server_type = "${var.node_type}"
   image       = "${var.node_image}"
   depends_on  = ["hcloud_server.master"]
-  ssh_keys    = ["${hcloud_ssh_key.k8s_admin.id}"]
-
-  connection {
-    private_key = "${file(var.ssh_private_key)}"
-  }
+  ssh_keys    = ["hcloud_ssh_key.k8s_admin.name"]
 
   provisioner "file" {
     source      = "files/10-kubeadm.conf"
@@ -76,18 +77,12 @@ resource "hcloud_server" "node" {
   }
 
   provisioner "remote-exec" {
-    inline = "DOCKER_VERSION=${var.docker_version} KUBERNETES_VERSION=${var.kubernetes_version} bash /root/bootstrap.sh"
+    inline = ["DOCKER_VERSION=${var.docker_version} KUBERNETES_VERSION=${var.kubernetes_version} bash /root/bootstrap.sh"]
   }
 
   provisioner "file" {
     source      = "${path.module}/secrets/kubeadm_join"
     destination = "/tmp/kubeadm_join"
-
-    connection {
-      type        = "ssh"
-      user        = "root"
-      private_key = "${file(var.ssh_private_key)}"
-    }
   }
 
   provisioner "file" {
@@ -96,6 +91,6 @@ resource "hcloud_server" "node" {
   }
 
   provisioner "remote-exec" {
-    inline = "bash /root/node.sh"
+    inline = ["bash /root/node.sh"]
   }
 }
