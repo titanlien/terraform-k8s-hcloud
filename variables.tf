@@ -11,7 +11,7 @@ variable "master_image" {
 
 variable "master_type" {
   description = "For more types have a look at https://www.hetzner.de/cloud"
-  default     = "cx11-ceph"
+  default     = "cx11"
 }
 
 variable "node_count" {

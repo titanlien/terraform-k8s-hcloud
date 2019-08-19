@@ -12,8 +12,8 @@ provider "hcloud" {
 }
 
 resource "hcloud_ssh_key" "k8s_admin" {
-  name       = "k8s_admin"
-  public_key = "${file(var.ssh_public_key)}"
+  name       = "personal"
+  public_key = file(var.ssh_public_key)
 }
 
 resource "hcloud_network" "privNet" {
