@@ -9,49 +9,54 @@ Pin: version ${DOCKER_VERSION}.*
 Pin-Priority: 1000
 " > /etc/apt/preferences.d/docker-ce
 sleep 30
-apt-get -qq update
-apt-get -qq install -y \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
-apt-get -qq update && apt-get -qq install -y docker-ce
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && \
+yum install -qy curl \
+    docker-ce device-mapper-persistent-data lvm2 yum-utils
 
-cat > /etc/docker/daemon.json <<EOF
+cat > /etc/docker/daemon.json << EOF
 {
-  "storage-driver":"overlay2" 
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2",
+  "storage-opts": [
+    "overlay2.override_kernel_check=true"
+  ]
 }
 EOF
 
 systemctl restart docker.service
 
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
-deb http://apt.kubernetes.io/ kubernetes-xenial main
+cat > /etc/sysctl.d/kubernetes.conf << EOF
+net.ipv4.ip_forward = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
 EOF
 
-echo "
-Package: kubelet
-Pin: version ${KUBERNETES_VERSION}-*
-Pin-Priority: 1000
-" > /etc/apt/preferences.d/kubelet
+cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
+        https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+EOF
+yum makecache fast -y
 
-echo "
-Package: kubeadm
-Pin: version ${KUBERNETES_VERSION}-*
-Pin-Priority: 1000
-" > /etc/apt/preferences.d/kubeadm
+swapoff -a
+sed -e '/swap/s/^/#/g' -i /etc/fstab
+firewall-cmd --permanent --add-port={6443,2379,2380,10250,10251,10252}/tcp
+firewall-cmd --reload
+setenforce 0
+sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
-apt-get -qq update
-apt-get -qq install -y kubelet kubeadm
+yum install -qy kubelet kubeadm kubectl
 
 mv -v /root/10-kubeadm.conf /etc/systemd/system/kubelet.service.d/10-kubeadm.conf 
-
 
 systemctl daemon-reload
 systemctl restart kubelet
