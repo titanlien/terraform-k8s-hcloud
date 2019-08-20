@@ -11,7 +11,7 @@ variable "master_image" {
 
 variable "master_type" {
   description = "For more types have a look at https://www.hetzner.de/cloud"
-  default     = "cx11"
+  default     = "cx11-ceph"
 }
 
 variable "node_count" {
@@ -38,18 +38,6 @@ variable "ssh_public_key" {
   default     = "~/.ssh/id_rsa.pub"
 }
 
-variable "docker_version" {
-  default = "18.06"
-}
-
-variable "kubernetes_version" {
-  default = "1.15.0"
-}
-
-variable "core_dns" {
-  default = false
-}
-
 variable "calico_enabled" {
-  default = false
+  default     = false
 }
