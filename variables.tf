@@ -6,7 +6,7 @@ variable "master_count" {
 
 variable "master_image" {
   description = "Predefined Image that will be used to spin up the machines (Currently supported: ubuntu-16.04, debian-9,centos-7,fedora-27)"
-  default     = "centos-7"
+  default     = "7250653"
 }
 
 variable "master_type" {
@@ -20,7 +20,7 @@ variable "node_count" {
 
 variable "node_image" {
   description = "Predefined Image that will be used to spin up the machines (Currently supported: ubuntu-16.04, debian-9,centos-7,fedora-27)"
-  default     = "centos-7"
+  default     = "7250653"
 }
 
 variable "node_type" {
