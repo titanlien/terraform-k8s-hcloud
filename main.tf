@@ -61,13 +61,24 @@ resource "hcloud_server" "node" {
   location    = "fsn1"
 }
 
-#resource "null_resource" "ansible-main" {
-#  triggers = {
-#    template_rendered = data.template_file.inventory.rendered
-#  }
-#  provisioner "local-exec" {
-#    command = "ssh-keyscan -H ${hcloud_server.master.ipv4_address} >> ~/.ssh/known_hosts && ansible-playbook -e sshKey=${var.pvt_key} -i ./ansible/inventory --limit managers ./ansible/main.yml"
-#  }
-#
-#  depends_on = ["hcloud_server.master", "null_resource.cmd"]
-#}
+resource "null_resource" "ansible-master" {
+  triggers = {
+    template_rendered = data.template_file.inventory.rendered
+  }
+  provisioner "local-exec" {
+    command = "ssh-keyscan -H ${hcloud_server.master.*.ipv4_address} >> ~/.ssh/known_hosts && ansible-playbook -e sshKey=${var.ssh_private_key} -i ./ansible/inventory --limit managers ./ansible/site.yml"
+  }
+
+  depends_on = ["hcloud_server.master", "null_resource.cmd"]
+}
+
+resource "null_resource" "ansible-node" {
+  triggers = {
+    template_rendered = data.template_file.inventory.rendered
+  }
+  provisioner "local-exec" {
+    command = "ssh-keyscan -H ${hcloud_server.node.*.ipv4_address} >> ~/.ssh/known_hosts && ansible-playbook -e sshKey=${var.ssh_private_key} -i ./ansible/inventory --limit nodes ./ansible/site.yml"
+  }
+
+  depends_on = ["hcloud_server.node", "null_resource.cmd"]
+}
