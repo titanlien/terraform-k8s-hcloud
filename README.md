@@ -10,6 +10,12 @@ $ terraform init
 $ terraform apply
 ```
 
+## Provision with Ansible
+```
+cd ansible/
+pipenv sync
+ansible-playbook -e sshKey=/Users/titan/.ssh/id_rsa -i inventory site.yaml
+```
 
 ## Variables
 
