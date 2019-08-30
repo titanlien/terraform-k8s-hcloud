@@ -60,3 +60,14 @@ resource "hcloud_server" "node" {
   ssh_keys    = [hcloud_ssh_key.k8s_admin.name]
   location    = "fsn1"
 }
+
+#resource "null_resource" "ansible-main" {
+#  triggers = {
+#    template_rendered = data.template_file.inventory.rendered
+#  }
+#  provisioner "local-exec" {
+#    command = "ssh-keyscan -H ${hcloud_server.master.ipv4_address} >> ~/.ssh/known_hosts && ansible-playbook -e sshKey=${var.pvt_key} -i ./ansible/inventory --limit managers ./ansible/main.yml"
+#  }
+#
+#  depends_on = ["hcloud_server.master", "null_resource.cmd"]
+#}
