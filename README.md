@@ -23,10 +23,10 @@ ansible-playbook -e sshKey=/Users/titan/.ssh/id_rsa -i inventory site.yaml
 |:-------------------------|:-------------|:----------------------------------------------------------------------------------|:--------:|
 | `hcloud_token`              | ``           |API Token that will be generated through your hetzner cloud project https://console.hetzner.cloud/projects      | Yes      |
 | `master_count`                  | `1`           | Amount of masters that will be created                                         | No      |
-| `master_image`                 | `[SNAPSHOT]`  | Predefined Image that will be used to spin up the machines (Currently supported: ubuntu-16.04, debian-9,centos-7,fedora-27)                                     | No      |
+| `master_image`                 | `[SNAPSHOT_ID]`  | Predefined Image that will be used to spin up the machines (Currently supported: ubuntu-16.04, debian-9,centos-7,fedora-27)                                     | No      |
 | `master_type`                   | `cx11`  | Machine type for more types have a look at https://www.hetzner.de/cloud                                   | No       |
 | `node_count`             | `1`  | Amount of nodes that will be created                                 | No       |
-| `node_image`                   | `[SNAPSHOT]`         | Predefined Image that will be used to spin up the machines (Currently supported: ubuntu-16.04, debian-9,centos-7,fedora-27)       |
+| `node_image`                   | `[SNAPSHOT_ID]`         | Predefined Image that will be used to spin up the machines (Currently supported: ubuntu-16.04, debian-9,centos-7,fedora-27)       |
 | `node_type`              | `cx11`          | Machine type for more types have a look at https://www.hetzner.de/cloud | No       |
 | `ssh_private_key`                    | `~/.ssh/id_ras`    | Private Key to access the machines       |
 | `ssh_public_key`          | `~/.ssh/id_rsa.pub`          | Public Key to authorized the access for the machines                                                     | No       |
