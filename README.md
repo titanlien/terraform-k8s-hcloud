@@ -63,7 +63,7 @@ $ terraform apply \
 
 ### Bug Reports & Feature Requests
 
-Please use the [issue tracker](https://github.com/solidnerd/terraform-k8s-hcloud/issues) to report any bugs or file feature requests.
+Please use the [issue tracker](https://github.com/titanlien/terraform-k8s-hcloud/issues) to report any bugs or file feature requests.
 
 
 **Tested with**
