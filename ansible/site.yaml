@@ -5,20 +5,20 @@
   roles:
     - { role: docker, tags: docker }
 
-- hosts: master
+- hosts: managers
   gather_facts: yes
   become: yes
   roles:
     - { role: kubernetes/master, tags: master }
     - { role: cni, tags: cni }
 
-- hosts: node
+- hosts: nodes
   gather_facts: yes
   become: yes
   roles:
     - { role: kubernetes/node, tags: node }
 
-- hosts: master
+- hosts: managers
   gather_facts: yes
   become: yes
   tasks:
