@@ -66,7 +66,7 @@ resource "null_resource" "ansible-master" {
     template_rendered = data.template_file.inventory.rendered
   }
   provisioner "local-exec" {
-    command = "ssh-keyscan -H ${hcloud_server.master.*.ipv4_address} >> ~/.ssh/known_hosts && ansible-playbook -e sshKey=${var.ssh_private_key} -i ./ansible/inventory --limit managers ./ansible/site.yml"
+    command = "ssh-keyscan -H hcloud_server.master.*.ipv4_address >> ~/.ssh/known_hosts; ansible-playbook -e sshKey=${var.ssh_private_key} -i ./ansible/inventory --limit managers ./ansible/site.yml --ask-vault-pass"
   }
 
   depends_on = ["hcloud_server.master", "null_resource.cmd"]
@@ -77,7 +77,7 @@ resource "null_resource" "ansible-node" {
     template_rendered = data.template_file.inventory.rendered
   }
   provisioner "local-exec" {
-    command = "ssh-keyscan -H ${hcloud_server.node.*.ipv4_address} >> ~/.ssh/known_hosts && ansible-playbook -e sshKey=${var.ssh_private_key} -i ./ansible/inventory --limit nodes ./ansible/site.yml"
+    command = "ssh-keyscan -H hcloud_server.node.*.ipv4_address >> ~/.ssh/known_hosts; ansible-playbook -e sshKey=${var.ssh_private_key} -i ./ansible/inventory --limit nodes ./ansible/site.yml --ask-vault-pass"
   }
 
   depends_on = ["hcloud_server.node", "null_resource.cmd"]
