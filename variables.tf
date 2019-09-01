@@ -6,12 +6,12 @@ variable "master_count" {
 
 variable "master_image" {
   description = "Predefined Image that will be used to spin up the machines (Currently supported: ubuntu-16.04, debian-9,centos-7,fedora-27)"
-  default     = "7250653"
+  default     = "7351878"
 }
 
 variable "master_type" {
   description = "For more types have a look at https://www.hetzner.de/cloud"
-  default     = "cx11"
+  default     = "cx21"
 }
 
 variable "node_count" {
@@ -20,7 +20,7 @@ variable "node_count" {
 
 variable "node_image" {
   description = "Predefined Image that will be used to spin up the machines (Currently supported: ubuntu-16.04, debian-9,centos-7,fedora-27)"
-  default     = "7250653"
+  default     = "7351878"
 }
 
 variable "node_type" {
@@ -39,5 +39,5 @@ variable "ssh_public_key" {
 }
 
 variable "calico_enabled" {
-  default     = false
+  default     = true
 }
