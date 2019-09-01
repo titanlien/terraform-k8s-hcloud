@@ -30,8 +30,8 @@ ansible-playbook -e sshKey=/Users/titan/.ssh/id_rsa -i inventory site.yaml
 | `node_type`              | `cx11`          | Machine type for more types have a look at https://www.hetzner.de/cloud | No       |
 | `ssh_private_key`                    | `~/.ssh/id_ras`    | Private Key to access the machines       |
 | `ssh_public_key`          | `~/.ssh/id_rsa.pub`          | Public Key to authorized the access for the machines                                                     | No       |
-| `docker_version`         | `19.03`          | Docker CE version that will be installed                                                     | No       |
-| `kubernetes_version`         | `1.12.2`          | Kubernetes version that will be installed                                                     | No       |
+| `docker_version`         | `18.09.06`          | Docker CE version that will be installed                                                     | No       |
+| `kubernetes_version`         | `1.15.3`          | Kubernetes version that will be installed                                                     | No       |
 | `core_dns`         | `false`          | Enables CoreDNS as Service Discovery                                                     | No       |
 | `calico_enabled`         | `false`          | Installs Calico Network Provider after the master comes up                                                    | No       |
 All variables cloud be passed through `environment variables` or a `tfvars` file.
