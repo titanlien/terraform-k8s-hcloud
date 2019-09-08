@@ -1,8 +1,10 @@
 [managers]
-116.202.10.19
+138.201.88.156
 
 [nodes]
+
 
 [kube-cluster:children]
 managers
 nodes
+
