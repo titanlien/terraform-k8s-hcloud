@@ -6,3 +6,4 @@ vars.tfvars
 .auto.tfvars
 .DS_Store
 secrets/
+pem/
