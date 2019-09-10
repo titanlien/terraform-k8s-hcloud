@@ -59,6 +59,16 @@ $ terraform apply \
 ```
 
 
+## Helm init with tls
+* [How to generate pem for helm](https://whmzsu.github.io/helm-doc-zh-cn/quickstart/tiller_ssl-zh_cn.html)
+* Remote init helm with tls
+
+```
+$ helm init --tiller-tls --tiller-tls-cert ./pem/tiller.cert.pem --tiller-tls-key ./pem/tiller.key.pem --tiller-tls-verify --tls-ca-cert ./pem/ca.cert.pem
+```
+* Using `helm` with `--tls`
+
+
 ## Contributing
 
 ### Bug Reports & Feature Requests
