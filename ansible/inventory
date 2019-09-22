@@ -2,7 +2,7 @@
 138.201.88.156
 
 [nodes]
-138.201.93.63
+
 
 [kube-cluster:children]
 managers
