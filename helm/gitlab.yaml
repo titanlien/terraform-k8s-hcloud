@@ -1,0 +1,7 @@
+certmanager-issuer:
+  email: titan.lien@gmail.com
+global:
+  hosts:
+    domain: gitlab.mhlien.tw
+    externalIP: 138.201.88.156
+
