@@ -134,3 +134,6 @@ If you use vagrant or your remote user is root, add this to `hosts.ini`
 [node]
 192.16.35.[10:11] ansible_user='root'
 ```
+
+# Ingress controller
+[Sample](https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-ingress-guide-nginx-example.html)
