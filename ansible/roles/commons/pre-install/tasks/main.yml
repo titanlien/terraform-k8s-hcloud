@@ -14,7 +14,7 @@
     backrefs: yes
     state: present
 
-- name: Disable swappiness and pass bridged IPv4 traffic to iptable's chains
+- name: Disable swappiness,pass bridged IPv4 traffic to iptable's chains, setup ip forward
   sysctl:
     name: "{{ item.name }}"
     value: "{{ item.value }}"
@@ -22,6 +22,8 @@
   with_items:
     - { name: 'vm.swappiness', value: '0' }
     - { name: 'net.bridge.bridge-nf-call-iptables', value: '1' }
+    - { name: 'net.ipv4.ip_forward', value: '1' }
+    - { name: 'net.ipv6.conf.default.forwarding', value: '1' }
 
 - name: Create service drop-in directory
   file:

@@ -6,12 +6,12 @@ variable "master_count" {
 
 variable "master_image" {
   description = "Predefined Image that will be used to spin up the machines (Currently supported: ubuntu-16.04, debian-9,centos-7,fedora-27)"
-  default     = "7541390"
+  default     = "8374035"
 }
 
 variable "master_type" {
   description = "For more types have a look at https://www.hetzner.de/cloud"
-  default     = "cx21-ceph"
+  default     = "cx11-ceph"
 }
 
 variable "node_count" {
@@ -20,12 +20,12 @@ variable "node_count" {
 
 variable "node_image" {
   description = "Predefined Image that will be used to spin up the machines (Currently supported: ubuntu-16.04, debian-9,centos-7,fedora-27)"
-  default     = "7541390"
+  default     = "8374035"
 }
 
 variable "node_type" {
   description = "For more types have a look at https://www.hetzner.de/cloud"
-  default     = "cx11-ceph"
+  default     = "cx21-ceph"
 }
 
 variable "ssh_private_key" {

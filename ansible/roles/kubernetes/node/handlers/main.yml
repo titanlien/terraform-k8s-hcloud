@@ -4,3 +4,8 @@
   delegate_to: "{{ groups['managers'][0] }}"
   run_once: true
   ignore_errors: true
+
+- name: Restart network service
+  systemd:
+    name: network
+    state: restarted

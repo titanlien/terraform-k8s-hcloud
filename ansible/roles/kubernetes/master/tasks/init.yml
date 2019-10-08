@@ -11,7 +11,9 @@
                  --kubernetes-version {{ kube_version }} \
                  --pod-network-cidr {{ pod_network_cidr }} \
                  --token {{ token }} \
-                 --apiserver-advertise-address {{ master_ip }} \
+                 --ignore-preflight-errors=NumCPU \
+                 --apiserver-advertise-address 0.0.0.0 \
+                 --apiserver-cert-extra-sans=10.0.1.10,{{ master_ip}} \
                  {{ kubeadm_opts }} \
                  {{ init_opts }}
   register: init_cluster
